@@ -1,21 +1,18 @@
-<<<<<<< HEAD
-# Study Companion AI
+# Study Companion AI 🤖
 
-An intelligent learning assistant with AI-powered study tools.
+An intelligent learning assistant with AI-powered study tools for students worldwide.
 
-## Features
-- 📚 Study material summarization
-- 🗂️ Flashcard creation
-- 📝 Interactive exams
-- 🎤 Lecture transcription
-- 🎬 YouTube study guides
+## 🚀 Features
+- 📚 **AI Summarization** - Convert study material into concise summaries
+- 🗂️ **Smart Flashcards** - Create and study with AI-generated flashcards
+- 📝 **Interactive Exams** - Test yourself with personalized quizzes
+- 🎤 **Lecture Transcription** - Live voice-to-text for classroom notes
+- 🎬 **YouTube Learning** - Study guides from educational videos
+- 📊 **Dashboard** - Track your learning progress
 
-## Setup Instructions
+## 🛠️ Setup Instructions
 
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/camillamora/study-companion1.git
-   cd study-companion
-=======
-# AI-companion
->>>>>>> 7f4ae73d6626793104cd7a21b6ecdf0c002f4026
+### 1. Clone the repository
+```bash
+git clone https://github.com/camillamora/study-ai-companion-2026.git
+cd study-ai-companion-2026

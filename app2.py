@@ -5,19 +5,19 @@ import os
 import uuid
 from datetime import datetime
 import requests
-import re
 
 app = Flask(__name__, template_folder='templates')
 app.secret_key = 'study-companion-secret-key-2024-change-this'
 
+# IMPORTANT: Configure session properly
 app.config.update(
-    SESSION_COOKIE_SECURE=False,
+    SESSION_COOKIE_SECURE=False,  # For local development (not HTTPS)
     SESSION_COOKIE_HTTPONLY=True,
-    SESSION_COOKIE_SAMESITE='Lax',
-    PERMANENT_SESSION_LIFETIME=3600
+    SESSION_COOKIE_SAMESITE='Lax',  # Allows cookies to be sent
+    PERMANENT_SESSION_LIFETIME=3600  # 1 hour
 )
 
-CORS(app, supports_credentials=True, origins=["http://localhost:*", "http://127.0.0.1:*", "*"])
+CORS(app, supports_credentials=True)  # Enable credentials for CORS
 
 # Groq API Configuration
 GROQ_API_KEY = os.environ.get("GROQ_API_KEY", "")
@@ -84,10 +84,11 @@ active_exams = {}
 
 @app.route('/')
 def index():
-    if 'user_id' in session:
-        return render_template('index.html', username=session.get('username'))
-    else:
-        return redirect('/login')
+    # FORZA IL LOGIN - SOLO PER TEST
+    session['user_id'] = 'demo-user-12345'
+    session['username'] = 'student'
+    print("✅ FORCED LOGIN - User ID set in session")
+    return render_template('index.html', username='student')
 
 @app.route('/login')
 def login_page():
