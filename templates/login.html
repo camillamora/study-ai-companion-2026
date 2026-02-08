@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login - Study Companion AI</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .login-container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 400px;
+            padding: 40px;
+        }
+        
+        .logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .logo h1 {
+            color: #2E7D32;
+            font-size: 2em;
+            margin-bottom: 5px;
+        }
+        
+        .logo p {
+            color: #666;
+        }
+        
+        .input-group {
+            margin-bottom: 20px;
+        }
+        
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+        }
+        
+        .input-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border 0.3s;
+        }
+        
+        .input-group input:focus {
+            outline: none;
+            border-color: #4CAF50;
+        }
+        
+        .login-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        .login-btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .error-message {
+            background: #FFEBEE;
+            color: #C62828;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+            display: none;
+        }
+        
+        .links {
+            text-align: center;
+            margin-top: 25px;
+            padding-top: 25px;
+            border-top: 1px solid #eee;
+        }
+        
+        .links a {
+            color: #2196F3;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+        
+        .links a:hover {
+            text-decoration: underline;
+        }
+        
+        .demo-credentials {
+            background: #E8F5E9;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            font-size: 0.9em;
+        }
+        
+        .demo-credentials h4 {
+            color: #2E7D32;
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="logo">
+            <h1>🤖 Study Companion AI</h1>
+            <p>Intelligent Learning Assistant</p>
+        </div>
+        
+        <div id="errorMessage" class="error-message"></div>
+        
+        <form id="loginForm">
+            <div class="input-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" required placeholder="Enter your username">
+            </div>
+            
+            <div class="input-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required placeholder="Enter your password">
+            </div>
+            
+            <button type="submit" class="login-btn">Login</button>
+        </form>
+        
+        <div class="links">
+            <p>Don't have an account? <a href="/signup">Sign up here</a></p>
+            <p>Or <a href="/">Go to Home</a></p>
+        </div>
+        
+        <div class="demo-credentials">
+            <h4>Demo Credentials:</h4>
+            <p>Username: <strong>student</strong></p>
+            <p>Password: <strong>password123</strong></p>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = "http://localhost:5000/api";
+        
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value.trim();
+            const errorDiv = document.getElementById('errorMessage');
+            
+            // Clear previous errors
+            errorDiv.style.display = 'none';
+            errorDiv.textContent = '';
+            
+            if (!username || !password) {
+                showError('Please fill in all fields');
+                return;
+            }
+            
+            try {
+                const response = await fetch(API_URL + "/login", {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({
+                    username: username,
+                    password: password
+                }),
+                credentials: 'include'  
+            });
+                
+                const data = await response.json();
+                
+                if (response.ok && data.success) {
+                    // Store user info in localStorage
+                    localStorage.setItem('is_logged_in', 'true');
+                    localStorage.setItem('username', data.username);
+                    localStorage.setItem('user_id', data.user_id);
+                    
+                    // Redirect to main app
+                    window.location.href = '/';
+                } else {
+                    showError(data.error || 'Login failed. Please try again.');
+                }
+            } catch (error) {
+                showError('Network error. Make sure the backend is running on port 5000.');
+                console.error('Login error:', error);
+            }
+        });
+        
+        function showError(message) {
+            const errorDiv = document.getElementById('errorMessage');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+        }
+        
+        // Check if already logged in
+        window.addEventListener('DOMContentLoaded', function() {
+            const isLoggedIn = localStorage.getItem('is_logged_in');
+            if (isLoggedIn === 'true') {
+                // Optional: Validate with backend
+                window.location.href = '/';
+            }
+        });
+    </script>
+</body>
+</html>

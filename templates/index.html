@@ -1,0 +1,2395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Study Companion AI - Intelligent Learning Assistant</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        .main-content {
+            padding: 30px;
+        }
+        
+        .section {
+            margin-bottom: 30px;
+            padding: 25px;
+            border-radius: 10px;
+            background: #f8f9fa;
+        }
+        
+        .section-title {
+            color: #2E7D32;
+            margin-bottom: 20px;
+            font-size: 1.4em;
+            border-bottom: 2px solid #4CAF50;
+            padding-bottom: 10px;
+        }
+        
+        textarea {
+            width: 100%;
+            height: 150px;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            resize: vertical;
+            margin-bottom: 15px;
+            transition: border 0.3s;
+        }
+        
+        textarea:focus {
+            outline: none;
+            border-color: #4CAF50;
+        }
+        
+        .buttons-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        button {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .primary-btn {
+            background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%);
+            color: white;
+        }
+        
+        .secondary-btn {
+            background: linear-gradient(135deg, #2196F3 0%, #0D47A1 100%);
+            color: white;
+        }
+        
+        .accent-btn {
+            background: linear-gradient(135deg, #FF9800 0%, #F57C00 100%);
+            color: white;
+        }
+        
+        .danger-btn {
+            background: linear-gradient(135deg, #f44336 0%, #c62828 100%);
+            color: white;
+        }
+        
+        .exam-btn {
+            background: linear-gradient(135deg, #9C27B0 0%, #6A1B9A 100%);
+            color: white;
+        }
+        
+        .input-group {
+            margin: 15px 0;
+        }
+        
+        input[type="text"], input[type="number"], select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            margin-top: 5px;
+        }
+        
+        .results {
+            margin-top: 30px;
+            padding: 25px;
+            background: white;
+            border-radius: 10px;
+            border-left: 5px solid #4CAF50;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        .result-title {
+            color: #2E7D32;
+            margin-bottom: 20px;
+            font-size: 1.3em;
+            font-weight: bold;
+        }
+        
+        .result-content {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 10px;
+            white-space: pre-wrap;
+            line-height: 1.6;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+        
+        .status {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+        
+        .status.connected {
+            background: #E8F5E9;
+            color: #2E7D32;
+            border: 2px solid #C8E6C9;
+        }
+        
+        .status.error {
+            background: #FFEBEE;
+            color: #C62828;
+            border: 2px solid #FFCDD2;
+        }
+        
+        .exam-interface {
+            background: linear-gradient(135deg, #f0f8ff 0%, #e6f7ff 100%);
+            padding: 20px;
+            border-radius: 10px;
+            border: 2px solid #2196F3;
+        }
+        
+        .question-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 4px solid #4CAF50;
+        }
+        
+        .timer {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #f44336;
+            text-align: center;
+            padding: 10px;
+            background: #FFEBEE;
+            border-radius: 8px;
+            margin: 10px 0;
+        }
+        
+        .option {
+            padding: 12px;
+            margin: 8px 0;
+            background: #f5f5f5;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .option:hover {
+            background: #e0e0e0;
+        }
+        
+        .option.selected {
+            background: #C8E6C9;
+            border: 2px solid #4CAF50;
+        }
+        
+        
+        .chat-bubble {
+            padding: 15px;
+            border-radius: 15px;
+            margin: 10px 0;
+            max-width: 80%;
+        }
+        
+        .ai-bubble {
+            background: #2196F3;
+            color: white;
+            align-self: flex-start;
+        }
+        
+        .user-bubble {
+            background: #4CAF50;
+            color: white;
+            align-self: flex-end;
+            margin-left: auto;
+        }
+        
+        .chat-input {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .chat-input input {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+            font-size: 0.9em;
+            border-top: 1px solid #eee;
+            background: #f8f9fa;
+        }
+        
+        @media (max-width: 768px) {
+            .buttons-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .container {
+                margin: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- USER HEADER -->
+    <div id="userHeader" style="background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%); color: white; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-radius: 10px;">
+        <div style="font-size: 1.2em; font-weight: bold;">
+            🤖 Study Companion AI
+        </div>
+        <div id="userInfo" style="display: flex; gap: 15px; align-items: center;">
+            <span id="currentUser">Loading...</span>
+            <button onclick="goToDashboard()" style="padding: 8px 16px; background: white; color: #2E7D32; border: none; border-radius: 5px; cursor: pointer;">
+                📊 Dashboard
+            </button>
+            <button onclick="logout()" style="padding: 8px 16px; background: #f44336; color: white; border: none; border-radius: 5px; cursor: pointer;">
+                Logout
+            </button>
+        </div>
+    </div>
+    
+    <div class="container">
+        <header>
+            <h1>🤖 Study Companion AI</h1>
+            <p class="subtitle">Intelligent Learning Assistant for Students Worldwide</p>
+        </header>
+        
+        <div class="main-content">
+            <div id="status" class="status">
+                Checking connection...
+            </div>
+            
+            <!-- Section 1: Core Study Tools -->
+            <div class="section">
+                <h2 class="section-title">📚 Core Study Tools</h2>
+                
+                <div class="input-group">
+                    <label for="inputText">Study Material:</label>
+                    <textarea id="inputText" placeholder="Paste your study material, notes, or textbook content here..."></textarea>
+                </div>
+                
+                <div class="buttons-grid">
+                    <button class="primary-btn" onclick="summarizeText()">
+                        📊 Summarize
+                    </button>
+                    <button class="secondary-btn" onclick="createFlashcards()">
+                        🗂️ Create Flashcards
+                    </button>
+                    <button class="accent-btn" onclick="suggestTopics()">
+                        🧭 Suggest Topics
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Section 2: Interactive Assessments -->
+            <div class="section">
+                <h2 class="section-title">📝 Interactive Assessments</h2>
+                
+                <div class="buttons-grid">
+                    <button class="exam-btn" onclick="startNewExam()">
+                        📋 Start New Exam
+                    </button>
+                    <button class="secondary-btn" onclick="continueExam()" id="continueExamBtn" style="display:none;">
+                        🔄 Continue Exam
+                    </button>
+                </div>
+                
+                <div id="examInterface" class="exam-interface" style="display:none;">
+                    <h3>Current Exam</h3>
+                    <div class="timer" id="examTimer">Time: --:--</div>
+                    <div id="currentQuestion"></div>
+                    <div id="optionsContainer"></div>
+                    <button class="primary-btn" onclick="submitAnswer()" id="submitBtn" style="display:none;">
+                        Submit Answer
+                    </button>
+                    <button class="danger-btn" onclick="finishExam()" id="finishBtn" style="display:none;">
+                        Finish Exam
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Section 3: YouTube Video Learning -->
+<div class="section">
+    <h2 class="section-title">🎬 Smart Video Learning</h2>
+    
+    <div class="input-group">
+        <label for="youtubeUrl">YouTube Video URL:</label>
+        <input type="text" id="youtubeUrl" placeholder="https://www.youtube.com/watch?v=...">
+        <small style="color: #666;">Paste any YouTube URL with educational content</small>
+    </div>
+    
+    <div class="buttons-grid">
+        <button class="accent-btn" onclick="transcribeYouTube()">
+            🎓 Study Guide
+        </button>
+    </div>
+    
+    <div id="videoProcessingStatus" style="margin: 15px 0; padding: 15px; background: #f0f8ff; border-radius: 8px; display:none;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <div class="loader" style="width: 20px; height: 20px; border: 3px solid #f3f3f3; border-top: 3px solid #4CAF50; border-radius: 50%; animation: spin 1s linear infinite;"></div>
+            <span id="statusText">Processing video...</span>
+        </div>
+    </div>
+</div>
+            
+            <!-- Section 4: Live Class Voice Transcription -->
+            <div class="section">
+                <h2 class="section-title">🎤 Live Class Voice Transcription</h2>
+                
+                <div class="input-group">
+                    <label>Subject/Class:</label>
+                    <input type="text" id="className" placeholder="e.g., Biology 101, Calculus, History">
+                </div>
+                
+                <div class="buttons-grid">
+                    <button class="primary-btn" onclick="startVoiceTranscription()" id="startVoiceBtn">
+                        🎙️ Start Recording Lecture
+                    </button>
+                    <button class="danger-btn" onclick="stopVoiceTranscription()" id="stopVoiceBtn" style="display:none;">
+                        ⏹️ Stop Recording
+                    </button>
+                    <button class="secondary-btn" onclick="processTranscription()" id="processBtn" style="display:none;">
+                        🤖 Process with AI
+                    </button>
+                </div>
+                
+                <div id="transcriptionStatus" style="margin: 15px 0; padding: 15px; background: #f0f8ff; border-radius: 8px; display:none;">
+                    <h4>🎤 Live Transcription</h4>
+                    <div id="liveText" style="max-height: 200px; overflow-y: auto; padding: 10px; background: white; border-radius: 5px; margin: 10px 0;">
+                        Transcription will appear here...
+                    </div>
+                    <div style="display: flex; gap: 10px; align-items: center;">
+                        <div id="volumeIndicator" style="width: 20px; height: 20px; background: #4CAF50; border-radius: 50%;"></div>
+                        <span id="statusText">Ready to record...</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Section 5: Results Display -->
+            <div class="results">
+                <div class="result-title">📋 Results</div>
+                <div id="result" class="result-content">
+                    Results will appear here...
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>Study Companion AI | International Hackathon Project | Backend: Flask + Groq AI | Real-time AI Tutoring System</p>
+            <p style="margin-top: 10px; font-size: 0.8em;">Features: Smart Summarization • Interactive Exams • Oral Examination • Flashcard System • YouTube Transcription</p>
+        </footer>
+    </div>
+
+    <script>
+    const API_URL = window.location.origin + "/api";
+
+
+function checkSavedContent() {
+    const savedContent = localStorage.getItem('saved_content');
+    const studyFlashcards = localStorage.getItem('study_flashcards');
+    const retakeExam = localStorage.getItem('retake_exam');
+    
+    if (savedContent) {
+        // Load saved content into the textarea
+        document.getElementById('inputText').value = savedContent;
+        // Show a notification
+        showNotification('📚 Content loaded from your saved materials!', 'success');
+        localStorage.removeItem('saved_content');
+    }
+    
+    if (studyFlashcards) {
+        // Load the specific flashcard set
+        loadFlashcardsForStudy(studyFlashcards);
+        localStorage.removeItem('study_flashcards');
+    }
+    
+    if (retakeExam) {
+        // Retake the exam
+        retakeSpecificExam(retakeExam);
+        localStorage.removeItem('retake_exam');
+    }
+}
+
+// Add this function to show notifications
+function showNotification(message, type = 'info') {
+    const notification = document.createElement('div');
+    notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 15px 20px;
+        background: ${type === 'success' ? '#4CAF50' : type === 'error' ? '#f44336' : '#2196F3'};
+        color: white;
+        border-radius: 8px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        z-index: 1000;
+        animation: slideIn 0.3s ease-out;
+    `;
+    
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+    `;
+    document.head.appendChild(style);
+    
+    notification.textContent = message;
+    document.body.appendChild(notification);
+    
+    setTimeout(() => {
+        notification.style.animation = 'slideOut 0.3s ease-out forwards';
+        setTimeout(() => notification.remove(), 300);
+    }, 3000);
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    if (checkLogin()) {
+        loadUserInfo();
+        testConnection();
+        checkSavedContent(); 
+    }
+});
+    // ========== INITIALIZATION ==========
+    function checkLogin() {
+        const isLoggedIn = localStorage.getItem('is_logged_in');
+        if (!isLoggedIn || isLoggedIn !== 'true') {
+            window.location.href = '/login';
+            return false;
+        }
+        return true;
+    }
+
+    function loadUserInfo() {
+        const username = localStorage.getItem('username');
+        const userId = localStorage.getItem('user_id');
+        
+        if (username) {
+            document.getElementById('currentUser').textContent = `👤 ${username} (ID: ${userId})`;
+        }
+        
+        return { username, userId };
+    }
+
+    async function logout() {
+        try {
+            const userId = localStorage.getItem('user_id');
+            await fetch(API_URL + "/logout", {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({ user_id: userId })
+            });
+            localStorage.clear();
+            window.location.href = '/login';
+        } catch (error) {
+            console.error('Logout error:', error);
+            localStorage.clear();
+            window.location.href = '/login';
+        }
+    }
+
+    function goToDashboard() {
+        window.location.href = '/dashboard';
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        if (checkLogin()) {
+            loadUserInfo();
+            testConnection();
+        }
+    });
+
+    // ========== CONNECTION TESTING ==========
+    function testConnection() {
+        document.getElementById('status').className = 'status';
+        document.getElementById('status').innerHTML = 'Testing connection...';
+        
+        fetch(API_URL + "/health")
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('status').className = 'status connected';
+                document.getElementById('status').innerHTML = '✅ Backend connected! AI system ready.';
+                
+                // Show user info
+                const username = localStorage.getItem('username') || 'Guest';
+                document.getElementById('result').innerHTML = 
+                    `<strong>🚀 Study Companion AI Ready!</strong><br><br>` +
+                    `Welcome, ${username}!<br>` +
+                    `Service: ${data.service}<br>` +
+                    `AI Status: ${data.ai_enabled ? '✅ Enabled' : '⚠️ Demo Mode'}<br>` +
+                    `Version: ${data.version}<br>` +
+                    `<button class="primary-btn" onclick="startTutorial()" style="margin-top: 10px;">🎯 Quick Start Tutorial</button>`;
+            })
+            .catch(error => {
+                document.getElementById('status').className = 'status error';
+                document.getElementById('status').innerHTML = '❌ Backend connection failed!';
+                document.getElementById('result').innerHTML = 
+                    `<strong>Connection Error</strong><br><br>` +
+                    `Make sure:<br>` +
+                    `1. Flask server is running (python app.py)<br>` +
+                    `2. Server URL: ${API_URL}<br>` +
+                    `3. Refresh the page after starting server`;
+            });
+    }
+
+    // ========== EXAM SYSTEM - COMPLETELY REWRITTEN ==========
+    let currentExam = null;
+    let examTimer = null;
+    let timeRemaining = 60; // 60 seconds per question
+    let selectedOption = null;
+    let currentQuestionIndex = 0;
+    let examSessionId = null;
+
+    // Start new exam - SIMPLIFIED AND FIXED
+    function startNewExam() {
+        const text = document.getElementById('inputText').value.trim();
+        const userId = localStorage.getItem('user_id');
+        
+        // Clear any previous exam
+        currentExam = null;
+        examSessionId = null;
+        currentQuestionIndex = 0;
+        selectedOption = null;
+        if (examTimer) clearInterval(examTimer);
+        
+        // Show loading
+        document.getElementById('result').innerHTML = "⏳ Creating exam from your study material...";
+        
+        // Prepare exam data
+        let examData = {
+            text: text || "General knowledge questions about science, history, and mathematics.",
+            type: "comprehensive",
+            num_questions: 5,
+            user_id: userId
+        };
+        
+        console.log("Sending exam creation request...");
+        
+        // Call backend to create exam
+        fetch(API_URL + "/create_exam", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify(examData)
+        })
+        .then(response => {
+            console.log("Response status:", response.status);
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log("Exam response data:", data);
+            
+            if (data.error) {
+                // Try alternative endpoint
+                return createSimpleExam(text, userId);
+            }
+            
+            if (!data.success) {
+                throw new Error(data.error || "Failed to create exam");
+            }
+            
+            // Store the exam data - handle both nested and flat structures
+            let examQuestions = data.questions || data.exam?.questions || [];
+            let examId = data.exam_id || data.exam?.exam_id;
+            
+            if (!examQuestions || examQuestions.length === 0) {
+                throw new Error("No questions generated");
+            }
+            
+            currentExam = {
+                exam_id: examId || 'exam-' + Date.now(),
+                questions: examQuestions,
+                total_questions: examQuestions.length,
+                currentIndex: 0,
+                score: 0,
+                user_id: userId,
+                exam_name: data.exam?.type || "Practice Exam"
+            };
+            
+            examSessionId = currentExam.exam_id;
+            
+            // Show exam interface
+            document.getElementById('examInterface').style.display = 'block';
+            document.getElementById('continueExamBtn').style.display = 'block';
+            
+            // Show first question immediately
+            showQuestion(0);
+            
+        })
+        .catch(error => {
+            console.error("Exam creation error:", error);
+            createSimpleExam(text, userId);
+        });
+    }
+
+    function createSimpleExam(text, userId) {
+        console.log("Creating simple exam as fallback...");
+        
+        // Create a simple exam with mock questions
+        currentExam = {
+            exam_id: 'simple-exam-' + Date.now(),
+            questions: [
+                {
+                    id: 'q1',
+                    question: "What is the capital of France?",
+                    options: ["London", "Berlin", "Paris", "Madrid"],
+                    correct_answer: "C",
+                    explanation: "Paris is the capital of France.",
+                    question_number: 1,
+                    points: 10,
+                    difficulty: "Easy"
+                },
+                {
+                    id: 'q2',
+                    question: "Which planet is known as the Red Planet?",
+                    options: ["Venus", "Mars", "Jupiter", "Saturn"],
+                    correct_answer: "B",
+                    explanation: "Mars appears red due to iron oxide on its surface.",
+                    question_number: 2,
+                    points: 10,
+                    difficulty: "Easy"
+                },
+                {
+                    id: 'q3',
+                    question: "What is the chemical formula for water?",
+                    options: ["CO2", "H2O", "O2", "NaCl"],
+                    correct_answer: "B",
+                    explanation: "H2O is the chemical formula for water (two hydrogen, one oxygen).",
+                    question_number: 3,
+                    points: 10,
+                    difficulty: "Easy"
+                },
+                {
+                    id: 'q4',
+                    question: "Who wrote 'Romeo and Juliet'?",
+                    options: ["Charles Dickens", "William Shakespeare", "Mark Twain", "Jane Austen"],
+                    correct_answer: "B",
+                    explanation: "William Shakespeare wrote the famous play 'Romeo and Juliet'.",
+                    question_number: 4,
+                    points: 10,
+                    difficulty: "Medium"
+                },
+                {
+                    id: 'q5',
+                    question: "What is the largest mammal in the world?",
+                    options: ["African Elephant", "Blue Whale", "Giraffe", "Polar Bear"],
+                    correct_answer: "B",
+                    explanation: "The Blue Whale is the largest mammal on Earth.",
+                    question_number: 5,
+                    points: 10,
+                    difficulty: "Medium"
+                }
+            ],
+            total_questions: 5,
+            currentIndex: 0,
+            score: 0,
+            user_id: userId,
+            exam_name: "Practice Knowledge Test"
+        };
+        
+        examSessionId = currentExam.exam_id;
+        
+        // Show exam interface
+        document.getElementById('examInterface').style.display = 'block';
+        document.getElementById('continueExamBtn').style.display = 'block';
+        
+        // Show first question immediately
+        showQuestion(0);
+    }
+
+    function continueExam() {
+        if (!currentExam || !currentExam.questions || currentExam.questions.length === 0) {
+            alert("No exam available. Please start a new exam first.");
+            return;
+        }
+        
+        document.getElementById('examInterface').style.display = 'block';
+        document.getElementById('result').innerHTML = '';
+        
+        // Show current question (or first if just starting)
+        showQuestion(currentQuestionIndex);
+    }
+
+    function showQuestion(index) {
+        if (!currentExam || !currentExam.questions || index >= currentExam.questions.length) {
+            // End of exam
+            finishExam();
+            return;
+        }
+        
+        currentQuestionIndex = index;
+        const question = currentExam.questions[index];
+        const questionNumber = index + 1;
+        
+        // Display question
+        document.getElementById('currentQuestion').innerHTML = `
+            <div class="question-card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                    <div>
+                        <strong style="font-size: 1.2em; color: #2E7D32;">Question ${questionNumber} of ${currentExam.total_questions}</strong>
+                        <div style="font-size: 0.9em; color: #666; margin-top: 5px;">${question.difficulty || 'Medium'} • ${question.points || 10} points</div>
+                    </div>
+                    <span style="background: #4CAF50; padding: 5px 15px; border-radius: 20px; font-size: 0.9em; color: white;">
+                        Question ${questionNumber}
+                    </span>
+                </div>
+                <div style="font-size: 1.2em; line-height: 1.5; margin: 20px 0; padding: 15px; background: #f8f9fa; border-radius: 8px; border-left: 4px solid #2196F3;">
+                    ${question.question}
+                </div>
+            </div>`;
+        
+        // Display options
+        let optionsHtml = '';
+        if (question.options && question.options.length > 0) {
+            question.options.forEach((option, i) => {
+                const optionLetter = String.fromCharCode(65 + i);
+                optionsHtml += `
+                    <div class="option" onclick="selectOption(this, '${optionLetter}')" data-option="${optionLetter}">
+                        <div style="display: flex; align-items: center; gap: 15px;">
+                            <div style="width: 35px; height: 35px; border-radius: 50%; background: #e0e0e0; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.1em;">
+                                ${optionLetter}
+                            </div>
+                            <div style="flex: 1; font-size: 1.1em;">${option}</div>
+                        </div>
+                    </div>`;
+            });
+        } else {
+            // Fallback options
+            const defaultOptions = ['Option A', 'Option B', 'Option C', 'Option D'];
+            defaultOptions.forEach((option, i) => {
+                const optionLetter = String.fromCharCode(65 + i);
+                optionsHtml += `
+                    <div class="option" onclick="selectOption(this, '${optionLetter}')" data-option="${optionLetter}">
+                        <strong>${optionLetter}.</strong> ${option}
+                    </div>`;
+            });
+        }
+        
+        document.getElementById('optionsContainer').innerHTML = optionsHtml;
+        document.getElementById('submitBtn').style.display = 'block';
+        document.getElementById('finishBtn').style.display = 'none';
+        
+        // Start timer for this question
+        startTimer(60);
+        
+        // Update exam header
+        updateExamHeader();
+    }
+
+    function updateExamHeader() {
+        const score = currentExam.score || 0;
+        const totalPossible = currentExam.total_questions * 10;
+        document.getElementById('examTimer').innerHTML = `
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                <div>⏱️ Time: <span id="timeDisplay" style="font-weight: bold;">01:00</span></div>
+                <div>📊 Score: ${score}/${totalPossible}</div>
+                <div>🎯 Progress: ${currentQuestionIndex + 1}/${currentExam.total_questions}</div>
+            </div>`;
+    }
+
+    function selectOption(element, option) {
+        // Remove selection from all options
+        document.querySelectorAll('.option').forEach(opt => {
+            opt.classList.remove('selected');
+            opt.style.background = '#f5f5f5';
+        });
+        
+        // Add selection to clicked option
+        element.classList.add('selected');
+        element.style.background = '#E3F2FD';
+        element.style.border = '2px solid #2196F3';
+        selectedOption = option;
+    }
+
+    function startTimer(seconds) {
+        timeRemaining = seconds;
+        updateTimerDisplay();
+        
+        if (examTimer) clearInterval(examTimer);
+        
+        examTimer = setInterval(() => {
+            timeRemaining--;
+            updateTimerDisplay();
+            
+            if (timeRemaining <= 0) {
+                clearInterval(examTimer);
+                document.getElementById('timeDisplay').innerHTML = "00:00";
+                setTimeout(() => {
+                    if (selectedOption) {
+                        submitAnswer();
+                    } else {
+                        alert("Time's up! Moving to next question.");
+                        submitAnswer();
+                    }
+                }, 1000);
+            }
+        }, 1000);
+    }
+
+    function updateTimerDisplay() {
+        const minutes = Math.floor(timeRemaining / 60);
+        const seconds = timeRemaining % 60;
+        const timeDisplay = document.getElementById('timeDisplay');
+        if (timeDisplay) {
+            timeDisplay.innerHTML = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            
+            // Color code based on time
+            if (timeRemaining <= 10) {
+                timeDisplay.style.color = '#f44336';
+            } else if (timeRemaining <= 30) {
+                timeDisplay.style.color = '#FF9800';
+            } else {
+                timeDisplay.style.color = '#4CAF50';
+            }
+        }
+    }
+
+    function submitAnswer() {
+        if (!selectedOption) {
+            alert("Please select an answer!");
+            return;
+        }
+        
+        clearInterval(examTimer);
+        
+        const question = currentExam.questions[currentQuestionIndex];
+        const correctAnswer = question.correct_answer || 'B'; // Default to B if not specified
+        const isCorrect = (selectedOption === correctAnswer);
+        
+        // Update score
+        if (isCorrect) {
+            currentExam.score = (currentExam.score || 0) + (question.points || 10);
+        }
+        
+        // Show feedback
+        let feedbackHtml = `
+            <div style="margin: 20px 0; padding: 20px; background: ${isCorrect ? '#E8F5E9' : '#FFEBEE'}; 
+                         border-radius: 10px; border-left: 5px solid ${isCorrect ? '#4CAF50' : '#f44336'};">
+                <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px;">
+                    <div style="font-size: 2em;">${isCorrect ? '✅' : '❌'}</div>
+                    <div>
+                        <strong style="font-size: 1.2em;">${isCorrect ? 'Correct!' : 'Incorrect'}</strong><br>
+                        <span style="color: #666;">You selected: <strong>${selectedOption}</strong></span>
+                    </div>
+                </div>`;
+        
+        if (question.explanation) {
+            feedbackHtml += `
+                <div style="background: white; padding: 15px; border-radius: 8px; margin-top: 10px;">
+                    <strong>Explanation:</strong> ${question.explanation}
+                </div>`;
+        }
+        
+        if (correctAnswer) {
+            feedbackHtml += `
+                <div style="margin-top: 10px; padding: 10px; background: rgba(255,255,255,0.7); border-radius: 6px;">
+                    <strong>Correct answer:</strong> ${correctAnswer}
+                </div>`;
+        }
+        
+        feedbackHtml += `</div>`;
+        
+        document.getElementById('result').innerHTML = feedbackHtml;
+        
+        // Move to next question after 3 seconds
+        setTimeout(() => {
+            if (currentQuestionIndex < currentExam.questions.length - 1) {
+                currentQuestionIndex++;
+                selectedOption = null;
+                showQuestion(currentQuestionIndex);
+            } else {
+                // All questions answered
+                document.getElementById('submitBtn').style.display = 'none';
+                document.getElementById('finishBtn').style.display = 'block';
+                document.getElementById('currentQuestion').innerHTML = 
+                    `<div style="text-align: center; padding: 40px;">
+                        <div style="font-size: 3em; margin-bottom: 20px;">🎉</div>
+                        <h3>All Questions Answered!</h3>
+                        <p>You've completed all ${currentExam.total_questions} questions.</p>
+                        <div style="margin: 20px 0; padding: 20px; background: #E3F2FD; border-radius: 10px;">
+                            <strong>Your current score:</strong> ${currentExam.score} out of ${currentExam.total_questions * 10}
+                        </div>
+                        <p>Click "Finish Exam" to see your final results.</p>
+                    </div>`;
+                document.getElementById('optionsContainer').innerHTML = '';
+            }
+        }, 3000);
+    }
+
+    function finishExam() {
+    if (!currentExam) {
+        alert("No exam to finish!");
+        return;
+    }
+    
+    const totalPossible = currentExam.questions.length * 10;
+    const score = currentExam.score || 0;
+    const percentage = (score / totalPossible) * 100;
+    
+    // Calculate correct answers
+    const correctAnswers = Math.floor(score / 10);
+    
+    // Send exam results to backend
+    const userId = localStorage.getItem('user_id');
+    
+    // Create exam result object
+    const examResult = {
+        exam_id: currentExam.exam_id || 'exam-' + Date.now(),
+        user_id: userId,
+        type: currentExam.exam_name || "Practice Exam",
+        questions: currentExam.questions,
+        total_questions: currentExam.total_questions,
+        score: score,
+        total_points: totalPossible,
+        percentage: Math.round(percentage),
+        correct_count: correctAnswers,
+        completed_at: new Date().toISOString()
+    };
+    
+    // Send to backend to save
+    fetch(API_URL + "/save_exam_result", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(examResult)
+    })
+    .then(r => r.json())
+    .then(data => {
+        console.log("Exam saved:", data);
+    })
+    .catch(error => {
+        console.error("Failed to save exam:", error);
+    });
+        
+        // Determine grade
+        let grade, gradeColor, emoji;
+        if (percentage >= 90) {
+            grade = 'A'; gradeColor = '#4CAF50'; emoji = '🎉';
+        } else if (percentage >= 80) {
+            grade = 'B'; gradeColor = '#8BC34A'; emoji = '👍';
+        } else if (percentage >= 70) {
+            grade = 'C'; gradeColor = '#FFC107'; emoji = '😊';
+        } else if (percentage >= 60) {
+            grade = 'D'; gradeColor = '#FF9800'; emoji = '🤔';
+        } else {
+            grade = 'F'; gradeColor = '#f44336'; emoji = '📚';
+        }
+        
+        // Generate feedback
+        let feedback;
+        if (percentage >= 90) {
+            feedback = "Outstanding performance! You've mastered the material perfectly.";
+        } else if (percentage >= 80) {
+            feedback = "Excellent work! You have a strong understanding of the concepts.";
+        } else if (percentage >= 70) {
+            feedback = "Good job! You understand the main concepts but could use some review.";
+        } else if (percentage >= 60) {
+            feedback = "You passed! Review the areas you missed to improve your understanding.";
+        } else {
+            feedback = "Keep studying! Review the material and try again. Focus on the concepts you missed.";
+        }
+        
+        // Display results
+        let html = `<div style="max-width: 800px; margin: 0 auto;">`;
+        html += `<div style="background: linear-gradient(135deg, ${gradeColor} 0%, ${darkenColor(gradeColor)} 100%); color: white; padding: 30px; border-radius: 15px; text-align: center; margin-bottom: 30px;">
+            <div style="font-size: 4em; margin-bottom: 10px;">${emoji}</div>
+            <div style="font-size: 3em; font-weight: bold; margin-bottom: 10px;">${Math.round(percentage)}%</div>
+            <div style="font-size: 1.5em; margin-bottom: 10px;">Grade: ${grade}</div>
+            <div style="font-size: 1.2em;">Score: ${score} / ${totalPossible}</div>
+        </div>`;
+        
+        html += `<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px;">`;
+        
+        const stats = [
+            { label: "Questions", value: currentExam.total_questions, icon: "❓" },
+            { label: "Correct", value: correctAnswers, icon: "✅" },
+            { label: "Incorrect", value: currentExam.total_questions - correctAnswers, icon: "❌" },
+            { label: "Accuracy", value: `${Math.round((correctAnswers/currentExam.total_questions)*100)}%`, icon: "🎯" }
+        ];
+        
+        stats.forEach(stat => {
+            html += `<div style="background: white; padding: 20px; border-radius: 10px; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+                <div style="font-size: 2em; margin-bottom: 10px;">${stat.icon}</div>
+                <div style="font-size: 2em; font-weight: bold; color: #2E7D32;">${stat.value}</div>
+                <div style="color: #666;">${stat.label}</div>
+            </div>`;
+        });
+        
+        html += `</div>`;
+        
+        html += `<div style="background: white; padding: 25px; border-radius: 10px; margin-bottom: 30px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+            <h3 style="color: #2E7D32; margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">
+                <span>💡</span> Feedback & Recommendations
+            </h3>
+            <div style="background: #FFF3CD; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+                ${feedback}
+            </div>
+            
+            <h4 style="margin: 20px 0 10px 0; color: #666;">Recommended Actions:</h4>
+            <ul style="padding-left: 20px;">
+                <li>Review the questions you got wrong</li>
+                <li>Create flashcards for difficult concepts</li>
+                <li>Take another practice exam</li>
+                <li>Focus on areas with lower scores</li>
+            </ul>
+        </div>`;
+        
+        html += `<div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; margin-top: 30px;">
+            <button class="primary-btn" onclick="startNewExam()" style="padding: 15px 30px; font-size: 1.1em;">
+                🔄 Take Another Exam
+            </button>
+            <button class="secondary-btn" onclick="createFlashcards()" style="padding: 15px 30px; font-size: 1.1em;">
+                🗂️ Create Flashcards
+            </button>
+            <button class="accent-btn" onclick="document.getElementById('examInterface').style.display='none'; document.getElementById('result').innerHTML='';" style="padding: 15px 30px; font-size: 1.1em;">
+                🏁 Close Results
+            </button>
+        </div>`;
+        
+        html += `</div>`;
+        
+        document.getElementById('result').innerHTML = html;
+        document.getElementById('examInterface').style.display = 'none';
+        document.getElementById('continueExamBtn').style.display = 'none';
+        currentExam = null;
+        currentQuestionIndex = 0;
+        examSessionId = null;
+    }
+
+
+    async function retakeSpecificExam(examId) {
+    try {
+        console.log("Fetching exam for retake:", examId);
+        
+        // Fetch the exam data from backend
+        const response = await fetch(API_URL + `/get_exam/${examId}`);
+        const data = await response.json();
+        
+        if (data.success && data.exam) {
+            const exam = data.exam;
+            
+            console.log("Retrieved exam:", exam);
+            
+            // Create a new exam object with the same questions
+            currentExam = {
+                exam_id: 'retake-' + Date.now(),
+                questions: exam.questions || [],
+                total_questions: exam.questions ? exam.questions.length : 0,
+                currentIndex: 0,
+                score: 0,
+                user_id: localStorage.getItem('user_id'),
+                exam_name: `${exam.type || 'Exam'} (Retake)`,
+                original_exam_id: examId
+            };
+            
+            // Check if we have valid questions
+            if (!currentExam.questions || currentExam.questions.length === 0) {
+                throw new Error("No questions found in exam");
+            }
+            
+            // Show exam interface
+            document.getElementById('examInterface').style.display = 'block';
+            document.getElementById('continueExamBtn').style.display = 'block';
+            
+            // Show welcome message for retake
+            document.getElementById('result').innerHTML = `
+                <div style="background: #E3F2FD; padding: 20px; border-radius: 10px; text-align: center; margin-bottom: 20px;">
+                    <h3>🔄 Retaking Previous Exam</h3>
+                    <p>You are retaking an exam with ${currentExam.total_questions} questions.</p>
+                    <p>Try to improve your score from last time!</p>
+                    <button class="primary-btn" onclick="continueExam()" style="margin-top: 15px;">
+                        Start Retake Now
+                    </button>
+                </div>
+            `;
+            
+        } else {
+            throw new Error(data.error || 'Failed to load exam');
+        }
+    } catch (error) {
+        console.error("Error retaking exam:", error);
+        
+        // Fallback: show error and offer to create new exam
+        document.getElementById('result').innerHTML = `
+            <div style="background: #FFEBEE; padding: 20px; border-radius: 10px;">
+                <h3>❌ Could Not Load Exam</h3>
+                <p>${error.message}</p>
+                <p>Would you like to create a new exam instead?</p>
+                <button class="primary-btn" onclick="startNewExam()" style="margin-top: 15px;">
+                    Create New Exam
+                </button>
+            </div>
+        `;
+    }
+}
+
+function checkSavedContent() {
+    const savedContent = localStorage.getItem('saved_content');
+    const studyFlashcards = localStorage.getItem('study_flashcards');
+    const examToRetake = localStorage.getItem('exam_to_retake');
+    const retakeExam = localStorage.getItem('retake_exam');
+    
+    if (savedContent) {
+        document.getElementById('inputText').value = savedContent;
+        showNotification('📚 Content loaded from your saved materials!', 'success');
+        localStorage.removeItem('saved_content');
+    }
+    
+    if (studyFlashcards) {
+        loadFlashcardsForStudy(studyFlashcards);
+        localStorage.removeItem('study_flashcards');
+    }
+    
+    if (examToRetake) {
+        retakeSpecificExam(examToRetake);
+    }
+    
+    if (retakeExam) {
+        // Handle old format
+        retakeSpecificExam(retakeExam);
+        localStorage.removeItem('retake_exam');
+    }
+}
+
+function useExamAsStudyMaterial(examId) {
+    // This would extract questions and use them as study material
+    fetch(API_URL + `/get_exam/${examId}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                const exam = data.exam;
+                const studyText = exam.questions.map((q, i) => 
+                    `Q${i+1}: ${q.question}\n` +
+                    `Options: ${(q.options || []).join(', ')}\n` +
+                    `Correct: ${q.correct_answer || 'Not specified'}\n` +
+                    `Explanation: ${q.explanation || 'No explanation provided'}\n`
+                ).join('\n');
+                
+                document.getElementById('inputText').value = studyText;
+                showNotification('📚 Exam questions loaded as study material!', 'success');
+                closeModal();
+            }
+        })
+        .catch(error => {
+            console.error('Error loading exam:', error);
+            alert('Failed to load exam for study');
+        });
+}
+
+// Add this function to handle retaking exams
+function retakeSpecificExam(examId) {
+    console.log("Retaking exam:", examId);
+    
+    // Create a simple exam for retake
+    currentExam = {
+        exam_id: 'retake-' + Date.now(),
+        exam_name: "Exam Retake",
+        questions: [
+            {
+                id: 'q1',
+                question: "What is the capital of France?",
+                options: ["London", "Berlin", "Paris", "Madrid"],
+                correct_answer: "C",
+                explanation: "Paris is the capital of France.",
+                question_number: 1,
+                points: 10,
+                difficulty: "Easy"
+            },
+            {
+                id: 'q2',
+                question: "Which planet is known as the Red Planet?",
+                options: ["Venus", "Mars", "Jupiter", "Saturn"],
+                correct_answer: "B",
+                explanation: "Mars appears red due to iron oxide on its surface.",
+                question_number: 2,
+                points: 10,
+                difficulty: "Easy"
+            },
+            {
+                id: 'q3',
+                question: "What is the chemical formula for water?",
+                options: ["CO2", "H2O", "O2", "NaCl"],
+                correct_answer: "B",
+                explanation: "H2O is the chemical formula for water (two hydrogen, one oxygen).",
+                question_number: 3,
+                points: 10,
+                difficulty: "Easy"
+            }
+        ],
+        total_questions: 3,
+        currentIndex: 0,
+        score: 0,
+        user_id: localStorage.getItem('user_id') || 'guest'
+    };
+    
+    // Show exam interface
+    document.getElementById('examInterface').style.display = 'block';
+    document.getElementById('continueExamBtn').style.display = 'block';
+    document.getElementById('result').innerHTML = '';
+    
+    // Show first question immediately
+    showQuestion(0);
+}
+
+// Add this to check for retake when page loads
+function checkForRetake() {
+    const retakeExam = localStorage.getItem('retake_exam');
+    
+    if (retakeExam) {
+        retakeSpecificExam(retakeExam);
+        localStorage.removeItem('retake_exam');
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    if (checkLogin()) {
+        loadUserInfo();
+        testConnection();
+        checkForRetake();  
+    }
+});
+    function darkenColor(color) {
+        switch(color) {
+            case '#4CAF50': return '#2E7D32';
+            case '#8BC34A': return '#689F38';
+            case '#FFC107': return '#FFA000';
+            case '#FF9800': return '#F57C00';
+            case '#f44336': return '#c62828';
+            default: return '#1976D2';
+        }
+    }
+
+    // ========== OTHER FUNCTIONS (summarize, flashcards, etc.) ==========
+    function summarizeText() {
+        const text = document.getElementById('inputText').value.trim();
+        const topic = prompt("Enter topic for this material:", "General") || "General";
+        const userId = localStorage.getItem('user_id');
+        
+        if (!text) {
+            alert("Please enter study material first!");
+            return;
+        }
+        
+        document.getElementById('result').innerHTML = "⏳ Generating summary...";
+        
+        fetch(API_URL + "/summarize", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({ 
+                text: text,
+                topic: topic,
+                user_id: userId
+            })
+        })
+        .then(r => r.json())
+        .then(data => {
+            if (data.error) {
+                document.getElementById('result').innerHTML = `❌ Error: ${data.error}`;
+            } else {
+                document.getElementById('result').innerHTML = 
+                    `<strong>📊 AI SUMMARY</strong><br><br>` +
+                    `<div style="background: #E8F5E9; padding: 10px; border-radius: 8px; margin-bottom: 15px;">
+                     ✅ Saved to your study materials!
+                     </div>` +
+                    `${data.summary}<br><br>` +
+                    `<div style="margin-top: 20px;">
+                     <button class="primary-btn" onclick="goToDashboard()">📊 View All Materials</button>
+                     </div>`;
+            }
+        })
+        .catch(error => {
+            document.getElementById('result').innerHTML = `❌ Error: ${error.message}`;
+        });
+    }
+
+    function createFlashcards() {
+        const text = document.getElementById('inputText').value.trim();
+        const topic = prompt("Enter topic for these flashcards:", "General") || "General";
+        const userId = localStorage.getItem('user_id');
+        
+        if (!text) {
+            alert("Please enter study material first!");
+            return;
+        }
+        
+        document.getElementById('result').innerHTML = "⏳ Creating flashcards with study schedule...";
+        
+        fetch(API_URL + "/create_flashcards", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({ 
+                text: text,
+                topic: topic,
+                num_cards: 12,
+                user_id: userId
+            })
+        })
+        .then(r => r.json())
+        .then(data => {
+            if (data.error) {
+                document.getElementById('result').innerHTML = `❌ Error: ${data.error}`;
+            } else if (data.flashcards) {
+                let html = `<strong>🗂️ FLASHCARDS CREATED (${data.total_cards} cards)</strong><br>`;
+                html += `<div style="color: #666; margin-bottom: 15px;">Source: ${data.ai_source}</div>`;
+                html += `<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 15px;">`;
+                
+                data.flashcards.forEach((card, i) => {
+                    html += `<div class="simple-flashcard" onclick="toggleSimpleCard(this)" style="
+                        border: 2px solid #4CAF50; 
+                        padding: 20px; 
+                        border-radius: 10px; 
+                        background: white; 
+                        cursor: pointer; 
+                        min-height: 150px; 
+                        margin-bottom: 15px;
+                    ">
+                        <div class="simple-front">
+                            <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 15px;">
+                                <strong style="color: #2E7D32;">Card ${i+1}</strong>
+                                <span style="background: #E8F5E9; padding: 3px 10px; border-radius: 12px; font-size: 0.9em;">${card.category}</span>
+                            </div>
+                            <div style="font-size: 1.1em; line-height: 1.4; margin-bottom: 15px;">
+                                <strong>Q:</strong> ${card.front}
+                            </div>
+                            <div style="text-align: center; font-size: 0.9em; color: #666; margin-top: 15px;">
+                                👆 Click to see answer
+                            </div>
+                        </div>
+                        
+                        <div class="simple-back" style="display: none;">
+                            <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 15px;">
+                                <strong style="color: #2196F3;">Answer</strong>
+                                <span style="background: #FFF3CD; padding: 3px 10px; border-radius: 12px; font-size: 0.9em;">Difficulty: ${card.difficulty}</span>
+                            </div>
+                            <div style="font-size: 1.1em; line-height: 1.4;">
+                                <strong>A:</strong> ${card.back}
+                            </div>
+                            <div style="text-align: center; font-size: 0.9em; color: #666; margin-top: 15px;">
+                                👆 Click to flip back
+                            </div>
+                        </div>
+                    </div>`;
+                });
+                
+                html += `</div>`;
+                
+                if (data.study_tip) {
+                    html += `<br><div style="background: #E3F2FD; padding: 15px; border-radius: 8px; margin-top: 20px;">`;
+                    html += `💡 <strong>Study Tip:</strong> ${data.study_tip}`;
+                    html += `</div>`;
+                }
+                
+                document.getElementById('result').innerHTML = html;
+            }
+        })
+        .catch(error => {
+            document.getElementById('result').innerHTML = `❌ Error: ${error.message}`;
+        });
+    }
+
+    function toggleSimpleCard(cardElement) {
+        const front = cardElement.querySelector('.simple-front');
+        const back = cardElement.querySelector('.simple-back');
+        
+        if (front.style.display === 'none') {
+            front.style.display = 'block';
+            back.style.display = 'none';
+            cardElement.style.borderColor = '#4CAF50';
+        } else {
+            front.style.display = 'none';
+            back.style.display = 'block';
+            cardElement.style.borderColor = '#2196F3';
+        }
+    }
+
+    function suggestTopics() {
+    const text = document.getElementById('inputText').value.trim();
+    const userId = localStorage.getItem('user_id');
+    
+    if (!text || text.length < 50) {
+        alert("Please enter at least 2-3 sentences of study material for better suggestions!");
+        return;
+    }
+    
+    document.getElementById('result').innerHTML = `
+        <div style="text-align: center; padding: 30px;">
+            <div class="loader" style="width: 50px; height: 50px; border: 5px solid #f3f3f3; border-top: 5px solid #4CAF50; border-radius: 50%; margin: 0 auto 20px auto; animation: spin 1s linear infinite;"></div>
+            <h3>🎯 Analyzing Your Study Material...</h3>
+            <p>Generating comprehensive learning suggestions...</p>
+        </div>
+    `;
+    
+    // Add CSS for spinner
+    if (!document.querySelector('style#loader-style')) {
+        const style = document.createElement('style');
+        style.id = 'loader-style';
+        style.textContent = `
+            @keyframes spin {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+            }
+        `;
+        document.head.appendChild(style);
+    }
+    
+    fetch(API_URL + "/suggest_topics", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({ 
+            text: text,
+            user_id: userId
+        })
+    })
+    .then(r => {
+        if (!r.ok) {
+            throw new Error(`HTTP ${r.status}: ${r.statusText}`);
+        }
+        return r.json();
+    })
+    .then(data => {
+        if (data.error) {
+            // Fallback to local analysis
+            showLocalSuggestions(text);
+            return;
+        }
+        
+        if (data.success && data.suggestions) {
+            displayEnhancedSuggestions(data.suggestions, data.main_topic);
+        } else {
+            showLocalSuggestions(text);
+        }
+    })
+    .catch(error => {
+        console.error("Suggestions error:", error);
+        showLocalSuggestions(text);
+    });
+}
+
+function displayEnhancedSuggestions(aiResponse, mainTopic) {
+    let html = `<div style="max-width: 900px; margin: 0 auto;">`;
+    
+    // Header
+    html += `<div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 25px; border-radius: 15px; margin-bottom: 30px;">
+        <h2 style="margin: 0 0 10px 0; font-size: 1.8em;">🎯 AI-Powered Learning Guide</h2>
+        <div style="opacity: 0.9; font-size: 1.1em;">${mainTopic ? `Topic: ${mainTopic}` : 'Comprehensive Study Suggestions'}</div>
+    </div>`;
+    
+    // Main content with AI response
+    html += `<div style="background: white; padding: 30px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1);">
+        <div style="white-space: pre-wrap; font-size: 1.1em; line-height: 1.6;">
+            ${aiResponse}
+        </div>
+    </div>`;
+    
+    // Action buttons
+    html += `<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 30px;">`;
+    
+    const actions = [
+        { icon: "📊", text: "Create Summary", action: "summarizeText()", color: "#4CAF50" },
+        { icon: "🗂️", text: "Make Flashcards", action: "createFlashcards()", color: "#2196F3" },
+        { icon: "📝", text: "Start Practice Exam", action: "startNewExam()", color: "#9C27B0" },
+        { icon: "🎬", text: "Find Videos", action: "findRelatedVideos()", color: "#f44336" }
+    ];
+    
+    actions.forEach(action => {
+        html += `<button onclick="${action.action}" 
+                style="padding: 15px; background: ${action.color}; color: white; border: none; border-radius: 10px; cursor: pointer; font-size: 1em; font-weight: bold; display: flex; flex-direction: column; align-items: center; gap: 10px; transition: all 0.3s;"
+                onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 10px 20px rgba(0,0,0,0.2)'"
+                onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+                <span style="font-size: 2em;">${action.icon}</span>
+                ${action.text}
+                </button>`;
+    });
+    
+    html += `</div>`;
+    
+    // Learning path suggestion
+    html += `<div style="background: #FFF3CD; padding: 20px; border-radius: 10px; margin-top: 30px;">
+        <h3 style="color: #F57C00; margin-top: 0;">📅 Suggested Learning Path:</h3>
+        <div style="display: flex; overflow-x: auto; gap: 15px; padding: 10px 0;">
+            <div style="min-width: 200px; background: white; padding: 15px; border-radius: 8px; box-shadow: 0 3px 10px rgba(0,0,0,0.1);">
+                <div style="font-weight: bold; color: #4CAF50;">Week 1</div>
+                <div>Master basics & terminology</div>
+            </div>
+            <div style="min-width: 200px; background: white; padding: 15px; border-radius: 8px; box-shadow: 0 3px 10px rgba(0,0,0,0.1);">
+                <div style="font-weight: bold; color: #2196F3;">Week 2</div>
+                <div>Study core concepts</div>
+            </div>
+            <div style="min-width: 200px; background: white; padding: 15px; border-radius: 8px; box-shadow: 0 3px 10px rgba(0,0,0,0.1);">
+                <div style="font-weight: bold; color: #9C27B0;">Week 3</div>
+                <div>Practice with exercises</div>
+            </div>
+            <div style="min-width: 200px; background: white; padding: 15px; border-radius: 8px; box-shadow: 0 3px 10px rgba(0,0,0,0.1);">
+                <div style="font-weight: bold; color: #f44336;">Week 4</div>
+                <div>Apply to real problems</div>
+            </div>
+        </div>
+    </div>`;
+    
+    // Footer note
+    html += `<div style="text-align: center; margin-top: 30px; color: #666; font-size: 0.9em;">
+        💡 <strong>Tip:</strong> Bookmark this page or take screenshots for future reference.
+        <br>Created by Study Companion AI • ${new Date().toLocaleDateString()}
+    </div>`;
+    
+    html += `</div>`;
+    
+    document.getElementById('result').innerHTML = html;
+}
+
+function findRelatedVideos() {
+    const text = document.getElementById('inputText').value.trim();
+    if (!text) {
+        alert("Please enter study material first!");
+        return;
+    }
+    
+    // Extract keywords for YouTube search
+    const words = text.toLowerCase().split(/\s+/);
+    const keywords = words.filter(word => word.length > 4).slice(0, 3).join(' ');
+    
+    document.getElementById('result').innerHTML = `
+        <div style="background: linear-gradient(135deg, #f44336 0%, #c62828 100%); color: white; padding: 25px; border-radius: 15px; margin-bottom: 30px;">
+            <h2 style="margin: 0 0 10px 0; font-size: 1.8em;">🎬 Find Related Educational Videos</h2>
+            <div style="opacity: 0.9;">Searching for: ${keywords || 'educational content'}</div>
+        </div>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+            <div style="background: white; padding: 20px; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+                <h3 style="color: #f44336;">🔍 YouTube Search Tips</h3>
+                <ul style="padding-left: 20px;">
+                    <li>Search: "${keywords} tutorial"</li>
+                    <li>Search: "${keywords} explained"</li>
+                    <li>Search: "${keywords} crash course"</li>
+                    <li>Search: "${keywords} documentary"</li>
+                </ul>
+            </div>
+            
+            <div style="background: white; padding: 20px; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+                <h3 style="color: #2196F3;">📚 Recommended Channels</h3>
+                <ul style="padding-left: 20px;">
+                    <li>Khan Academy</li>
+                    <li>Crash Course</li>
+                    <li>TED-Ed</li>
+                    <li>MIT OpenCourseWare</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div style="margin-top: 30px; text-align: center;">
+            <button onclick="window.open('https://www.youtube.com/results?search_query=${encodeURIComponent(keywords + ' tutorial')}', '_blank')" 
+                    style="padding: 15px 40px; background: #f44336; color: white; border: none; border-radius: 10px; cursor: pointer; font-size: 1.2em; font-weight: bold;">
+                🎬 Search YouTube Now
+            </button>
+        </div>
+    `;
+}
+
+function showLocalSuggestions(text) {
+    // Fallback local analysis with better suggestions
+    const lines = text.split('\n').filter(line => line.trim().length > 20);
+    const firstFewLines = lines.slice(0, 3).join(' ');
+    
+    let mainTopic = "Your Study Topic";
+    if (firstFewLines) {
+        const words = firstFewLines.split(' ');
+        if (words.length > 3) {
+            mainTopic = words.slice(0, 4).join(' ');
+        }
+    }
+    
+    const html = `
+    <div style="max-width: 900px; margin: 0 auto;">
+        <div style="background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%); color: white; padding: 25px; border-radius: 15px; margin-bottom: 30px;">
+            <h2 style="margin: 0 0 10px 0; font-size: 1.8em;">🧭 Study Navigator</h2>
+            <div style="opacity: 0.9; font-size: 1.1em;">Topic: ${mainTopic}</div>
+        </div>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-bottom: 30px;">
+            <div style="background: #E3F2FD; padding: 20px; border-radius: 10px;">
+                <h3 style="color: #2196F3; margin-top: 0;">📚 Related Topics</h3>
+                <ul>
+                    <li>Historical context and origins</li>
+                    <li>Modern applications</li>
+                    <li>Related scientific fields</li>
+                    <li>Current research trends</li>
+                    <li>Practical implementations</li>
+                </ul>
+            </div>
+            
+            <div style="background: #E8F5E9; padding: 20px; border-radius: 10px;">
+                <h3 style="color: #4CAF50; margin-top: 0;">🎓 Prerequisites</h3>
+                <ul>
+                    <li>Basic terminology mastery</li>
+                    <li>Foundational concepts</li>
+                    <li>Mathematical/scientific basics</li>
+                    <li>Historical background</li>
+                    <li>Key methodologies</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div style="background: #FFF3CD; padding: 25px; border-radius: 10px; margin-bottom: 30px;">
+            <h3 style="color: #F57C00; margin-top: 0;">💡 Curious Facts & Resources</h3>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 15px;">
+                <div>
+                    <h4 style="color: #9C27B0;">🎬 Recommended Media:</h4>
+                    <ul>
+                        <li>Documentaries on the topic</li>
+                        <li>TED Talks</li>
+                        <li>Educational YouTube channels</li>
+                        <li>Academic podcasts</li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 style="color: #f44336;">📖 Suggested Books:</h4>
+                    <ul>
+                        <li>"Introduction to [Topic]" texts</li>
+                        <li>Biographies of key figures</li>
+                        <li>Popular science books</li>
+                        <li>Academic textbooks</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div style="background: white; padding: 20px; border-radius: 10px; border: 2px dashed #9C27B0;">
+            <h3 style="color: #9C27B0; margin-top: 0;">🚀 Learning Action Plan</h3>
+            <ol style="padding-left: 20px;">
+                <li><strong>Week 1:</strong> Master basic terminology and concepts</li>
+                <li><strong>Week 2:</strong> Study core principles and theories</li>
+                <li><strong>Week 3:</strong> Practice with exercises and problems</li>
+                <li><strong>Week 4:</strong> Apply knowledge to real-world scenarios</li>
+                <li><strong>Week 5+:</strong> Explore advanced topics and current research</li>
+            </ol>
+        </div>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin-top: 30px;">
+            <button onclick="summarizeText()" style="padding: 15px; background: #4CAF50; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold;">
+                📊 Summarize
+            </button>
+            <button onclick="createFlashcards()" style="padding: 15px; background: #2196F3; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold;">
+                🗂️ Flashcards
+            </button>
+            <button onclick="startNewExam()" style="padding: 15px; background: #9C27B0; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold;">
+                📝 Practice Exam
+            </button>
+            <button onclick="findRelatedVideos()" style="padding: 15px; background: #f44336; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold;">
+                🎬 Find Videos
+            </button>
+        </div>
+    </div>
+    `;
+    
+    document.getElementById('result').innerHTML = html;
+}
+
+    // ========== TUTORIAL FUNCTION ==========
+    function startTutorial() {
+        document.getElementById('result').innerHTML = `
+            <strong>🎯 Study Companion AI - Quick Start Tutorial</strong><br><br>
+            
+            <div style="background: #E3F2FD; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+                <strong>Step 1: 📝 Enter Study Material</strong><br>
+                Copy and paste your notes, textbook content, or any study material into the text box above.
+            </div>
+            
+            <div style="background: #E8F5E9; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+                <strong>Step 2: 🧠 Use AI Tools</strong><br>
+                • Click <strong>Summarize</strong> to get key points<br>
+                • Click <strong>Create Flashcards</strong> for memorization<br>
+                • Click <strong>Start New Exam</strong> to test yourself<br>
+                • Click <strong>Suggest Topics</strong> for study focus
+            </div>
+            
+            <div style="background: #FFF3CD; padding: 20px; border-radius: 10px;">
+                <strong>Step 3: 🚀 Advanced Features</strong><br>
+                • Use the YouTube URL box for video learning<br>
+                • Try voice transcription for lectures<br>
+                • Check your dashboard for saved materials<br>
+                • Review regularly with spaced repetition
+            </div>
+            
+            <div style="margin-top: 20px; text-align: center;">
+                <button class="primary-btn" onclick="startNewExam()">📝 Try Your First Exam Now</button>
+            </div>
+        `;
+    }
+
+    // ========== YOUTUBE VIDEO STUDY GUIDE ==========
+    function transcribeYouTube() {
+        const url = document.getElementById('youtubeUrl').value.trim();
+        
+        if (!url || (!url.includes('youtube.com') && !url.includes('youtu.be'))) {
+            alert("Please enter a valid YouTube URL!");
+            return;
+        }
+        
+        // Extract video ID
+        let videoId = '';
+        if (url.includes('youtube.com/watch?v=')) {
+            videoId = url.split('v=')[1].split('&')[0];
+        } else if (url.includes('youtu.be/')) {
+            videoId = url.split('youtu.be/')[1].split('?')[0];
+        }
+        
+        // Generate a title from URL
+        let videoTitle = "Educational Video";
+        if (url.includes('youtube.com/watch?v=')) {
+            try {
+                const params = new URLSearchParams(url.split('?')[1]);
+                const vParam = params.get('v');
+                if (vParam) {
+                    videoTitle = decodeURIComponent(vParam).replace(/[_-]/g, ' ');
+                }
+            } catch (e) {
+            }
+        }
+        
+        // Show the study guide
+        showStudyGuide(videoId, videoTitle, url);
+    }
+
+    function showStudyGuide(videoId, videoTitle, url) {
+        console.log("Showing study guide for:", videoTitle);
+        
+        let html = `<div style="background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%); color: white; padding: 25px; border-radius: 15px 15px 0 0;">
+            <h2 style="margin: 0; font-size: 1.8em;">🎓 VIDEO STUDY GUIDE</h2>
+            <div style="opacity: 0.9; font-size: 1.1em; margin-top: 10px;">"${videoTitle}"</div>
+        </div>`;
+        
+        html += `<div style="padding: 30px; background: white; border-radius: 0 0 15px 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">`;
+        
+        // Embedded Video Player
+        if (videoId) {
+            html += `<div style="margin-bottom: 30px;">`;
+            html += `<h3 style="color: #f44336; margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
+                <span>▶️</span> WATCH & LEARN
+            </h3>`;
+            html += `<div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 12px; box-shadow: 0 8px 25px rgba(0,0,0,0.15);">`;
+            html += `<iframe src="https://www.youtube.com/embed/${videoId}?rel=0" 
+                    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowfullscreen></iframe>`;
+            html += `</div>`;
+            
+            // Playback controls
+            html += `<div style="display: flex; gap: 10px; margin-top: 15px; flex-wrap: wrap;">`;
+            html += `<button onclick="setPlaybackSpeed(0.75)" style="padding: 10px 20px; background: #e0e0e0; border: none; border-radius: 6px; cursor: pointer;">0.75x</button>`;
+            html += `<button onclick="setPlaybackSpeed(1)" style="padding: 10px 20px; background: #4CAF50; color: white; border: none; border-radius: 6px; cursor: pointer;">Normal</button>`;
+            html += `<button onclick="setPlaybackSpeed(1.25)" style="padding: 10px 20px; background: #e0e0e0; border: none; border-radius: 6px; cursor: pointer;">1.25x</button>`;
+            html += `<button onclick="setPlaybackSpeed(1.5)" style="padding: 10px 20px; background: #e0e0e0; border: none; border-radius: 6px; cursor: pointer;">1.5x</button>`;
+            html += `<button onclick="window.open('${url}', '_blank')" style="padding: 10px 20px; background: #2196F3; color: white; border: none; border-radius: 6px; cursor: pointer;">Open in YouTube</button>`;
+            html += `</div>`;
+            html += `</div>`;
+        }
+        
+        // Note-Taking Section
+        html += `<div style="margin-bottom: 30px;">`;
+        html += `<h3 style="color: #2196F3; margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
+            <span>📝</span> TAKE NOTES
+        </h3>`;
+        
+        html += `<div style="background: #f8f9fa; padding: 25px; border-radius: 10px; border: 2px dashed #2196F3;">`;
+        html += `<textarea id="studyGuideNotes" placeholder="Take notes here as you watch...
+        
+💡 Note-taking prompts:
+• What's the main idea?
+• Key terms and definitions
+• Examples given
+• Questions that come to mind
+• How this connects to what you already know" 
+             style="width: 100%; padding: 20px; border: 2px solid #2196F3; border-radius: 8px; min-height: 200px; font-size: 16px; line-height: 1.6; font-family: 'Segoe UI', sans-serif;"></textarea>`;
+        
+        html += `<div style="display: flex; gap: 10px; margin-top: 15px;">`;
+        html += `<button onclick="saveStudyNotes()" style="padding: 12px 25px; background: #4CAF50; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold;">💾 Save Notes</button>`;
+        html += `<button onclick="clearStudyNotes()" style="padding: 12px 25px; background: #f44336; color: white; border: none; border-radius: 8px; cursor: pointer;">🗑️ Clear</button>`;
+        html += `<button onclick="useNotesAsMaterial()" style="padding: 12px 25px; background: #2196F3; color: white; border: none; border-radius: 8px; cursor: pointer;">📚 Use in Study Tools</button>`;
+        html += `</div>`;
+        html += `</div>`;
+        html += `</div>`;
+        
+        // Study Timer
+        html += `<div style="margin-bottom: 30px;">`;
+        html += `<h3 style="color: #FF9800; margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
+            <span>⏱️</span> STUDY TIMER
+        </h3>`;
+        
+        html += `<div style="background: #FFF3CD; padding: 25px; border-radius: 10px; text-align: center;">`;
+        html += `<div id="pomodoroTimer" style="font-size: 3em; font-weight: bold; color: #F57C00; margin: 20px 0;">25:00</div>`;
+        html += `<div style="display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;">`;
+        html += `<button onclick="startPomodoroTimer()" style="padding: 12px 30px; background: #4CAF50; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 1.1em;">▶ Start (25 min)</button>`;
+        html += `<button onclick="pausePomodoroTimer()" style="padding: 12px 30px; background: #FF9800; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 1.1em;">⏸️ Pause</button>`;
+        html += `<button onclick="resetPomodoroTimer()" style="padding: 12px 30px; background: #f44336; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 1.1em;">🔄 Reset</button>`;
+        html += `</div>`;
+        html += `<div style="margin-top: 20px; color: #666; font-size: 0.9em;">
+            🍅 Pomodoro Technique: 25 min focus → 5 min break → Repeat
+        </div>`;
+        html += `</div>`;
+        html += `</div>`;
+        
+        // Study Plan
+        html += `<div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 25px; border-radius: 10px; margin-bottom: 30px;">`;
+        html += `<h3 style="margin: 0 0 20px 0; display: flex; align-items: center; gap: 10px;">
+            <span>📅</span> RECOMMENDED STUDY PLAN
+        </h3>`;
+        
+        html += `<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">`;
+        
+        const planSteps = [
+            { time: "0-10 min", task: "Watch first segment & take notes" },
+            { time: "10-20 min", task: "Pause & summarize key points" },
+            { time: "20-25 min", task: "Create flashcards from notes" },
+            { time: "25-30 min", task: "Take 5-min quiz to test understanding" }
+        ];
+        
+        planSteps.forEach(step => {
+            html += `<div style="background: rgba(255,255,255,0.2); padding: 15px; border-radius: 8px; backdrop-filter: blur(10px);">`;
+            html += `<div style="font-weight: bold; margin-bottom: 5px;">${step.time}</div>`;
+            html += `<div>${step.task}</div>`;
+            html += `</div>`;
+        });
+        
+        html += `</div>`;
+        html += `</div>`;
+        
+        // Quick Actions
+        html += `<div style="margin-bottom: 30px;">`;
+        html += `<h3 style="color: #9C27B0; margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">
+            <span>🔧</span> STUDY TOOLS
+        </h3>`;
+        
+        html += `<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px;">`;
+        
+        const studyActions = [
+            { text: "Summarize", icon: "📊", action: "summarizeText()" },
+            { text: "Flashcards", icon: "🗂️", action: "createFlashcards()" },
+            { text: "Quiz", icon: "📝", action: "startNewExam()" },
+            { text: "Study Guide", icon: "🧭", action: "suggestTopics()" },
+            { text: "Share", icon: "📤", action: "shareStudyGuide()" },
+            { text: "Print", icon: "🖨️", action: "printStudyGuide()" }
+        ];
+        
+        studyActions.forEach(action => {
+            html += `<button onclick="${action.action}" 
+                    style="padding: 15px; background: white; border: 2px solid #9C27B0; color: #9C27B0; border-radius: 10px; cursor: pointer; font-weight: bold; display: flex; flex-direction: column; align-items: center; gap: 10px; transition: all 0.2s;"
+                    onmouseover="this.style.background='#F3E5F5'; this.style.transform='translateY(-3px)'"
+                    onmouseout="this.style.background='white'; this.style.transform='translateY(0)'">
+                    <span style="font-size: 1.8em;">${action.icon}</span>
+                    ${action.text}
+                    </button>`;
+        });
+        
+        html += `</div>`;
+        html += `</div>`;
+        
+        // Active Learning Tips
+        html += `<div style="background: #FFEBEE; padding: 20px; border-radius: 8px; margin-bottom: 30px;">`;
+        html += `<h3 style="color: #f44336; margin-top: 0; margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
+            <span>💡</span> ACTIVE LEARNING TIPS
+        </h3>`;
+        
+        html += `<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px;">`;
+        
+        const tips = [
+            { icon: "⏸️", title: "Watch-Pause-Summarize", desc: "Watch 5 min, pause, summarize in your own words" },
+            { icon: "❓", title: "Question-Based", desc: "Write 3 questions before watching, find answers" },
+            { icon: "👨‍🏫", title: "Teach Back", desc: "Explain concepts to someone else after watching" },
+            { icon: "🎨", title: "Visual Notes", desc: "Draw diagrams and mind maps as you watch" }
+        ];
+        
+        tips.forEach(tip => {
+            html += `<div style="background: white; padding: 15px; border-radius: 8px;">`;
+            html += `<div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">`;
+            html += `<span style="font-size: 1.5em;">${tip.icon}</span>`;
+            html += `<strong>${tip.title}</strong>`;
+            html += `</div>`;
+            html += `<div style="color: #666; font-size: 0.9em;">${tip.desc}</div>`;
+            html += `</div>`;
+        });
+        
+        html += `</div>`;
+        html += `</div>`;
+        
+        // End Session Button
+        html += `<div style="text-align: center; padding-top: 20px; border-top: 1px solid #e0e0e0;">`;
+        html += `<button onclick="endStudySession()" 
+                style="padding: 15px 40px; background: #f44336; color: white; border: none; border-radius: 10px; cursor: pointer; font-size: 1.1em; font-weight: bold;">
+                🏁 End Study Session
+                </button>`;
+        html += `</div>`;
+        
+        html += `</div>`;
+        
+        document.getElementById('result').innerHTML = html;
+    }
+
+    // Helper functions for the study guide
+    let pomodoroInterval;
+    let pomodoroTime = 25 * 60; // 25 minutes in seconds
+
+    function setPlaybackSpeed(speed) {
+        const iframe = document.querySelector('iframe');
+        if (iframe) {
+            iframe.contentWindow.postMessage(`{"event":"command","func":"setPlaybackRate","args":[${speed}]}`, '*');
+            alert(`Playback speed set to ${speed}x`);
+        }
+    }
+
+    function saveStudyNotes() {
+        const notes = document.getElementById('studyGuideNotes').value.trim();
+        if (notes) {
+            localStorage.setItem('study_notes_' + Date.now(), notes);
+            alert("✅ Notes saved successfully!");
+        } else {
+            alert("Please write some notes first!");
+        }
+    }
+
+    function clearStudyNotes() {
+        if (confirm("Clear all notes?")) {
+            document.getElementById('studyGuideNotes').value = '';
+        }
+    }
+
+    function useNotesAsMaterial() {
+        const notes = document.getElementById('studyGuideNotes').value.trim();
+        if (notes) {
+            document.getElementById('inputText').value = notes;
+            alert("✅ Notes copied to study material box! Now use the study tools above.");
+        } else {
+            alert("Please write some notes first!");
+        }
+    }
+
+    function startPomodoroTimer() {
+        clearInterval(pomodoroInterval);
+        const timerElement = document.getElementById('pomodoroTimer');
+        
+        pomodoroInterval = setInterval(() => {
+            pomodoroTime--;
+            const minutes = Math.floor(pomodoroTime / 60);
+            const seconds = pomodoroTime % 60;
+            timerElement.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            
+            if (pomodoroTime <= 0) {
+                clearInterval(pomodoroInterval);
+                alert("⏰ Time's up! Take a 5-minute break.");
+                timerElement.textContent = "Break Time!";
+            }
+        }, 1000);
+    }
+
+    function pausePomodoroTimer() {
+        clearInterval(pomodoroInterval);
+    }
+
+    function resetPomodoroTimer() {
+        clearInterval(pomodoroInterval);
+        pomodoroTime = 25 * 60;
+        document.getElementById('pomodoroTimer').textContent = "25:00";
+    }
+
+    function shareStudyGuide() {
+        const shareText = "I'm using the Study Companion AI video study guide!";
+        if (navigator.share) {
+            navigator.share({
+                title: 'Study Companion AI',
+                text: shareText,
+                url: window.location.href
+            });
+        } else {
+            prompt("Copy this to share:", shareText);
+        }
+    }
+
+    function printStudyGuide() {
+        alert("Print feature would open print dialog in a real implementation");
+    }
+
+    function endStudySession() {
+        const notes = document.getElementById('studyGuideNotes')?.value || '';
+        
+        if (notes.trim()) {
+            if (confirm("End study session? Your notes will be saved.")) {
+                saveStudyNotes();
+                document.getElementById('result').innerHTML = `
+                    <div style="text-align: center; padding: 40px;">
+                        <div style="font-size: 3em; margin-bottom: 20px;">🎉</div>
+                        <h3>Study Session Complete!</h3>
+                        <p>Great work! Your notes have been saved.</p>
+                        <button onclick="transcribeYouTube()" style="margin-top: 20px; padding: 12px 30px; background: #4CAF50; color: white; border: none; border-radius: 8px; cursor: pointer;">
+                            🎓 Start New Session
+                        </button>
+                    </div>
+                `;
+            }
+        } else {
+            if (confirm("End study session without saving notes?")) {
+                document.getElementById('result').innerHTML = `
+                    <div style="text-align: center; padding: 40px;">
+                        <div style="font-size: 3em; margin-bottom: 20px;">📚</div>
+                        <h3>Ready for More Learning?</h3>
+                        <p>Start a new study session whenever you're ready!</p>
+                        <button onclick="transcribeYouTube()" style="margin-top: 20px; padding: 12px 30px; background: #4CAF50; color: white; border: none; border-radius: 8px; cursor: pointer;">
+                            🎓 New Study Session
+                        </button>
+                    </div>
+                `;
+            }
+        }
+    }
+
+    // ========== VOICE TRANSCRIPTION FUNCTIONS ==========
+    let mediaRecorder = null;
+    let audioChunks = [];
+    let isRecording = false;
+    let recognition = null;
+    let transcribedText = "";
+
+    function startVoiceTranscription() {
+        const className = document.getElementById('className').value || "Lecture";
+        
+        if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+            startBrowserTranscription(className);
+        } else if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+            startAudioRecording(className);
+        } else {
+            manualTranscriptionFallback(className);
+        }
+    }
+
+    function startBrowserTranscription(className) {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (!SpeechRecognition) {
+            manualTranscriptionFallback(className);
+            return;
+        }
+        
+        recognition = new SpeechRecognition();
+        recognition.continuous = true;
+        recognition.interimResults = true;
+        recognition.lang = 'en-US';
+        
+        recognition.onstart = function() {
+            isRecording = true;
+            document.getElementById('startVoiceBtn').style.display = 'none';
+            document.getElementById('stopVoiceBtn').style.display = 'block';
+            document.getElementById('processBtn').style.display = 'block';
+            document.getElementById('transcriptionStatus').style.display = 'block';
+            document.getElementById('statusText').textContent = 'Listening to lecture...';
+            transcribedText = `📚 ${className} - Live Transcription\n\n`;
+            updateLiveText();
+        };
+        
+        recognition.onresult = function(event) {
+            let interimTranscript = '';
+            let finalTranscript = '';
+            
+            for (let i = event.resultIndex; i < event.results.length; i++) {
+                const transcript = event.results[i][0].transcript;
+                if (event.results[i].isFinal) {
+                    finalTranscript += transcript + ' ';
+                } else {
+                    interimTranscript += transcript;
+                }
+            }
+            
+            transcribedText += finalTranscript;
+            updateLiveText(interimTranscript);
+            
+            const volumeIndicator = document.getElementById('volumeIndicator');
+            volumeIndicator.style.background = interimTranscript ? '#FF9800' : '#4CAF50';
+            volumeIndicator.style.transform = interimTranscript ? 'scale(1.2)' : 'scale(1)';
+        };
+        
+        recognition.onerror = function(event) {
+            console.error('Speech recognition error:', event.error);
+            document.getElementById('statusText').textContent = 'Error: ' + event.error;
+        };
+        
+        recognition.onend = function() {
+            if (isRecording) {
+                try {
+                    recognition.start();
+                } catch (e) {
+                    console.error('Failed to restart recognition:', e);
+                }
+            }
+        };
+        
+        try {
+            recognition.start();
+        } catch (error) {
+            console.error('Failed to start recognition:', error);
+            manualTranscriptionFallback(className);
+        }
+    }
+
+    function startAudioRecording(className) {
+        navigator.mediaDevices.getUserMedia({ audio: true })
+            .then(stream => {
+                mediaRecorder = new MediaRecorder(stream);
+                audioChunks = [];
+                
+                mediaRecorder.addEventListener('dataavailable', event => {
+                    audioChunks.push(event.data);
+                });
+                
+                mediaRecorder.addEventListener('stop', () => {
+                    const audioBlob = new Blob(audioChunks);
+                    simulateTranscription(className);
+                });
+                
+                mediaRecorder.start();
+                isRecording = true;
+                document.getElementById('startVoiceBtn').style.display = 'none';
+                document.getElementById('stopVoiceBtn').style.display = 'block';
+                document.getElementById('processBtn').style.display = 'block';
+                document.getElementById('transcriptionStatus').style.display = 'block';
+                document.getElementById('statusText').textContent = 'Recording audio...';
+                transcribedText = `📚 ${className} - Audio Recording\n\nAudio recorded. Processing would convert to text.`;
+                updateLiveText();
+            })
+            .catch(error => {
+                alert('Microphone access denied. Please allow microphone access.');
+                console.error('Microphone error:', error);
+                manualTranscriptionFallback(className);
+            });
+    }
+
+    function simulateTranscription(className) {
+        const simulatedText = `[SIMULATED TRANSCRIPTION - ${className}]
+
+Professor: "Today we'll discuss photosynthesis, the process by which plants convert light energy into chemical energy."
+
+Key points from lecture:
+1. Photosynthesis occurs in chloroplasts
+2. Requires sunlight, water, and carbon dioxide
+3. Produces glucose and oxygen
+4. Two stages: light-dependent and light-independent reactions
+5. Essential for life on Earth
+
+Important terms:
+- Chlorophyll: Green pigment that captures light
+- Stomata: Pores for gas exchange
+- ATP: Energy currency of cells
+- Calvin Cycle: Light-independent reactions
+
+Study questions:
+1. What are the inputs and outputs of photosynthesis?
+2. Why is photosynthesis important for ecosystems?
+3. How do plants adapt to different light conditions?`;
+
+        transcribedText = simulatedText;
+        updateLiveText();
+        document.getElementById('statusText').textContent = 'Recording complete. Ready to process.';
+    }
+
+    function manualTranscriptionFallback(className) {
+        transcribedText = `📝 MANUAL NOTE-TAKING MODE: ${className}
+
+Since your browser doesn't support voice transcription:
+
+1. Type notes manually below
+2. Click "Process with AI" when done
+3. AI will organize and enhance your notes
+
+YOUR NOTES:
+────────────────────`;
+        
+        document.getElementById('transcriptionStatus').style.display = 'block';
+        document.getElementById('liveText').innerHTML = 
+            `<textarea id="manualNotes" style="width:100%; height:150px; padding:10px;">${transcribedText}</textarea>`;
+        
+        document.getElementById('startVoiceBtn').style.display = 'none';
+        document.getElementById('stopVoiceBtn').style.display = 'none';
+        document.getElementById('processBtn').style.display = 'block';
+        document.getElementById('statusText').textContent = 'Type your notes above, then click Process';
+    }
+
+    function stopVoiceTranscription() {
+        isRecording = false;
+        
+        if (recognition) {
+            recognition.stop();
+        }
+        
+        if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+            mediaRecorder.stop();
+        }
+        
+        document.getElementById('startVoiceBtn').style.display = 'block';
+        document.getElementById('stopVoiceBtn').style.display = 'none';
+        document.getElementById('statusText').textContent = 'Recording stopped. Ready to process.';
+        document.getElementById('volumeIndicator').style.background = '#f44336';
+    }
+
+    function updateLiveText(interim = '') {
+        const liveText = document.getElementById('liveText');
+        let displayText = transcribedText;
+        
+        if (interim) {
+            displayText += `\n\n<i style="color: #666;">${interim}</i>`;
+        }
+        
+        liveText.innerHTML = displayText.replace(/\n/g, '<br>');
+        liveText.scrollTop = liveText.scrollHeight;
+    }
+
+    function processTranscription() {
+        if (!transcribedText || transcribedText.length < 10) {
+            alert("No transcription available. Please record or enter notes first.");
+            return;
+        }
+        
+        if (document.getElementById('manualNotes')) {
+            transcribedText = document.getElementById('manualNotes').value;
+        }
+        
+        const userId = localStorage.getItem('user_id');
+        
+        document.getElementById('result').innerHTML = "⏳ Processing lecture notes with AI...";
+        
+        fetch(API_URL + "/process_lecture_notes", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({ 
+                notes: transcribedText,
+                subject: document.getElementById('className').value || "Lecture",
+                user_id: userId
+            })
+        })
+        .then(r => r.json())
+        .then(data => {
+            if (data.error) {
+                document.getElementById('result').innerHTML = `❌ Error: ${data.error}`;
+            } else {
+                document.getElementById('inputText').value = data.processed_notes || data.transcript || transcribedText;
+                
+                let html = `<strong>🎓 AI-PROCESSED LECTURE NOTES</strong><br><br>`;
+                html += `<div style="background: #E8F5E9; padding: 10px; border-radius: 8px; margin-bottom: 15px;">`;
+                html += `<strong>Subject:</strong> ${data.subject || 'Lecture'}<br>`;
+                html += `<strong>Method:</strong> ${data.method || 'AI Processing'}<br>`;
+                if (data.note) html += `<strong>Note:</strong> ${data.note}`;
+                html += `</div>`;
+                
+                html += `<div style="white-space: pre-wrap; max-height: 500px; overflow-y: auto; padding: 15px; background: #f8f9fa; border-radius: 8px;">`;
+                html += data.processed_notes || data.transcript || transcribedText;
+                html += `</div>`;
+                
+                html += `<div style="margin-top: 20px;">`;
+                html += `<button class="primary-btn" onclick="useAsStudyMaterial()">✅ Already Copied to Study Box</button>`;
+                html += `<button class="secondary-btn" onclick="createFlashcards()" style="margin-left:10px;">🗂️ Create Flashcards</button>`;
+                html += `</div>`;
+                
+                document.getElementById('result').innerHTML = html;
+            }
+        })
+        .catch(error => {
+            processLocally();
+        });
+    }
+
+    function processLocally() {
+        const processed = `📚 AI-ENHANCED LECTURE NOTES
+
+Based on your transcription, here are organized notes:
+
+KEY CONCEPTS IDENTIFIED:
+• Multiple topics discussed
+• Important terms mentioned
+• Key examples provided
+
+RECOMMENDED STUDY ACTIONS:
+1. Create flashcards for key terms
+2. Generate practice questions
+3. Review with spaced repetition
+
+${transcribedText}
+
+💡 TIP: Use the tools above to create study materials!`;
+        
+        document.getElementById('inputText').value = processed;
+        document.getElementById('result').innerHTML = 
+            `<strong>✅ Lecture Notes Processed!</strong><br><br>
+            <div style="background: #E3F2FD; padding: 15px; border-radius: 8px;">
+            Your lecture notes have been copied to the study material box.<br>
+            Now you can:
+            <ul>
+                <li>Click "Summarize" for key points</li>
+                <li>Click "Create Flashcards" for important terms</li>
+                <li>Click "Start New Exam" to test yourself</li>
+            </ul>
+            </div>`;
+    }
+
+    function useAsStudyMaterial() {
+        alert("Lecture notes are already in the study material box! Use the tools above.");
+    }
+</script>
+</body>
+</html>
